@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My love</title>
+    <style>
+        /* --- Basic Setup --- */
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #ffffff;
+            overflow: hidden; /* This hides the emojis until they animate */
+        }
+
+        /* --- The Animated Background --- */
+        body {
+            background: linear-gradient(-45deg, #1a1a2e, #1f2a40, #2a2a5e, #1a1a2e);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Content Container --- */
+        .container {
+            z-index: 10;
+            padding: 20px;
+            max-width: 600px;
+            background: rgba(0, 0, 0, 0.2); /* Soft dark background */
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #f0f0f0;
+        }
+
+        /* --- The Typewriter Message --- */
+        #message {
+            font-size: 1.25rem;
+            line-height: 1.6;
+            color: #d0d0d0;
+            min-height: 250px; /* Gives space for the text to type out */
+            text-align: left;
+            white-space: pre-wrap; /* Respects the line breaks */
+        }
+
+        /* Blinking cursor effect */
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.25rem;
+            background-color: white;
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* --- The Buttons --- */
+        .button-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn {
+            text-decoration: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* "I forgave u" Button */
+        #yes-btn {
+            background: #28a745; /* Green */
+        }
+        #yes-btn:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        /* "fuck u aradhy" Button */
+        #no-btn {
+            background: #dc3545; /* Red */
+        }
+        #no-btn:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+        
+        /* --- "Cute" Sad Emoji Animation --- */
+        .sad-emoji {
+            position: absolute;
+            font-size: 2rem;
+            user-select: none;
+            /* Animation: name, duration, timing, forwards (stay at end) */
+            animation: float-up 5s linear forwards;
+        }
+
+        @keyframes float-up {
+            from {
+                transform: translateY(100vh) scale(1);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-10vh) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 id="title">For My love</h1>
+        <p id="message"></p>
+        <div class="button-container" id="buttons" style="display: none;">
+            
+            <a href="https://www.instagram.com/orchestratedbyaradhy/" id="yes-btn" class="btn">
+                I forgave u
+            </a>
+            
+            <button id="no-btn" class="btn">
+                fuck u aradhy
+            </button>
+            
+        </div>
+    </div>
+
+    <script>
+        // --- 1. The Message & Typewriter Effect ---
+        
+        // Your full message, with line breaks
+        const fullMessage = "I wish I could go back and change how I handled things.\nI realize now how deeply I hurt you and I hate myself for that.\n\nPlease forgive me... not because I deserve it, but because I genuinely want to make things right.\n\nI never meant to be the reason for your tears. You’ve always meant more to me than I could ever say. \n\nI’m sorry for everything, please don’t let this be the end of us. I’ll do anything to earn your forgiveness.";
+
+        const messageEl = document.getElementById('message');
+        const buttonsEl = document.getElementById('buttons');
+        let index = 0;
+        let speed = 40; // Speed in milliseconds (lower is faster)
+
+        // Add a blinking cursor
+        messageEl.innerHTML = '<span class="cursor"></span>';
+
+        function typeWriter() {
+            if (index < fullMessage.length) {
+                // Replace \n with <br> for HTML line breaks
+                let char = fullMessage.charAt(index);
+                if (char === '\n') {
+                    char = '<br>';
+                }
+                
+                // Add the character before the cursor
+                messageEl.innerHTML = fullMessage.substring(0, index + 1) + '<span class="cursor"></span>';
+                index++;
+                setTimeout(typeWriter, speed);
+            } else {
+                // Typing finished
+                messageEl.innerHTML = fullMessage; // Show full text
+                buttonsEl.style.display = 'flex'; // Show buttons
+            }
+        }
+
+        // Start the typing after a short delay
+        setTimeout(typeWriter, 1000);
+
+
+        // --- 2. The "No" Button Logic ---
+        const noBtn = document.getElementById('no-btn');
+        noBtn.addEventListener('click', function() {
+            
+            // This is the "cute" part: create 30 sad emojis
+            for (let i = 0; i < 30; i++) {
+                createSadEmoji();
+            }
+        });
+
+        function createSadEmoji() {
+            const emoji = document.createElement('div');
+            emoji.classList.add('sad-emoji');
+            
+            // Pick a random sad emoji
+            const sadEmojis = ['😢', '💔', '😞', '🥺'];
+            emoji.innerText = sadEmojis[Math.floor(Math.random() * sadEmojis.length)];
+            
+            // Random horizontal position
+            emoji.style.left = Math.random() * 100 + 'vw';
+            
+            // Random animation delay so they don't all start at once
+            emoji.style.animationDelay = Math.random() * 2 + 's';
+            
+            document.body.appendChild(emoji);
+            
+            // Clean up the emoji from the page after 5 seconds
+            setTimeout(() => {
+                emoji.remove();
+            }, 5000);
+        }
+
+    </script>
+</body>
+</html>
